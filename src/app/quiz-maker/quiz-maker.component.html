@@ -1,25 +1,29 @@
-<div class="row">
-  <div class="col-sm-11">
-    <ng-container *ngIf="(categories$ | async) as categories">
+<ng-container *ngIf="(categories$ | async) as categories; else loading">
+  <div class="row">
+    <div class="col-sm-11">
       <app-dropdown [items]="categories" placeholder="Select category"
-        (emitdropDownValue)="categoryValue($event)"></app-dropdown>
-    </ng-container>
-    <ng-container [ngSwitch]="subType">
-      <ng-container *ngSwitchCase="'Science'">
-        <app-dropdown [items]="scienceSubcategory" (emitdropDownValue)="subcategoryValue($event)"
-          placeholder="Select subcategory"></app-dropdown>
+        (emitdropDownValue)="getCategoryValue($event)"></app-dropdown>
+      <ng-container [ngSwitch]="subType">
+        <ng-container *ngSwitchCase="'Science'">
+          <app-dropdown [items]="scienceSubcategory" (emitdropDownValue)="getSubcategoryValue($event)"
+            placeholder="Select subcategory"></app-dropdown>
+        </ng-container>
+        <ng-container *ngSwitchCase="'Entertainment'">
+          <app-dropdown [items]="entertainmentSubcategory" (emitdropDownValue)="getSubcategoryValue($event)"
+            placeholder="Select subcategory"></app-dropdown>
+        </ng-container>
       </ng-container>
-      <ng-container *ngSwitchCase="'Entertainment'">
-        <app-dropdown [items]="entertainmentSubcategory" (emitdropDownValue)="subcategoryValue($event)"
-          placeholder="Select subcategory"></app-dropdown>
-      </ng-container>
-    </ng-container>
-    <app-dropdown [items]="difficultOptions" placeholder="Select difficulty"
-      (emitdropDownValue)="difficultyValue($event)"></app-dropdown>
-    <button class="primary" id="createBtn" (click)="createQuiz()">Create</button>
-    <span *ngIf="!category || !difficult">*** NOTE: Please select a category and difficulty. ***</span>
+      <app-dropdown [items]="difficultOptions" placeholder="Select difficulty"
+        (emitdropDownValue)="difficultyValue($event)"></app-dropdown>
+      <button class="primary" id="createBtn" (click)="createQuiz()">Create</button>
+      <span *ngIf="!category || !difficult">*** NOTE: Please select a category and difficulty. ***</span>
+    </div>
   </div>
-</div>
-<div class="row">
-  <app-quiz [questions]="questions$ | async"></app-quiz>
-</div>
+  <div class="row">
+    <app-quiz [questions]="questions$ | async"></app-quiz>
+  </div>
+</ng-container>
+
+<ng-template #loading>
+  <h1>LOADING...</h1>
+</ng-template>

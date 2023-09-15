@@ -21,10 +21,7 @@ export class QuizService {
   getAllCategories(): Observable<Category[]> {
     return this.http
       .get<{ trivia_categories: Category[] }>(this.API_URL + 'api_category.php')
-      .pipe(
-        map((res) => res.trivia_categories),
-        share()
-      );
+      .pipe(map((res) => res.trivia_categories));
   }
 
   createQuiz(
