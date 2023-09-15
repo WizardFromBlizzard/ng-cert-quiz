@@ -1,0 +1,6 @@
+<select (change)="dropdownValueChange($event)" [formControl]="dropDownControl">
+  <option value="">{{placeholder}}</option>
+  <option [value]="item.name" *ngFor="let item of items; trackBy: trackItemId">
+    {{item.name}}
+  </option>
+</select>

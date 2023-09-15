@@ -1,6 +1,13 @@
 export interface Category {
   id: number;
   name: string;
+  hasSubCategories?: boolean;
+  subcategoryType?: SubcategoryType;
+}
+
+export interface Difficulties {
+  id: number;
+  name: Difficulty;
 }
 
 export interface ApiQuestion {
@@ -25,5 +32,6 @@ export interface Results {
   score: number;
 }
 
+export type Difficulty = 'Easy' | 'Medium' | 'Hard';
 
-export type Difficulty = "Easy" | "Medium" | "Hard";
+export type SubcategoryType = 'Entertainment' | 'Science' | 'None';
