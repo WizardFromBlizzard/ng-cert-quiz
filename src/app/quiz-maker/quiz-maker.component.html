@@ -1,29 +1,34 @@
 <ng-container *ngIf="(categories$ | async) as categories; else loading">
   <div class="row">
     <div class="col-sm-11">
-      <app-dropdown [items]="categories" placeholder="Select category"
-        (emitdropDownValue)="getCategoryValue($event)"></app-dropdown>
-      <ng-container [ngSwitch]="subType">
-        <ng-container *ngSwitchCase="'Science'">
-          <app-dropdown [items]="scienceSubcategory" (emitdropDownValue)="getSubcategoryValue($event)"
-            placeholder="Select subcategory"></app-dropdown>
+
+      <form [formGroup]="quizFormGroup">
+        <app-dropdown-filter [items]="categories" placeholder="Select category"
+          formControlName="categoryControl"></app-dropdown-filter>
+        <ng-container [ngSwitch]="quizForm$ | async">
+          <ng-container *ngSwitchCase="'Science'">
+            <app-dropdown-filter [items]="scienceSubcategory" formControlName="subcategoryControl"
+              placeholder="Select subcategory"></app-dropdown-filter>
+          </ng-container>
+          <ng-container *ngSwitchCase="'Entertainment'">
+            <app-dropdown-filter [items]="entertainmentSubcategory" formControlName="subcategoryControl"
+              placeholder="Select subcategory"></app-dropdown-filter>
+          </ng-container>
         </ng-container>
-        <ng-container *ngSwitchCase="'Entertainment'">
-          <app-dropdown [items]="entertainmentSubcategory" (emitdropDownValue)="getSubcategoryValue($event)"
-            placeholder="Select subcategory"></app-dropdown>
-        </ng-container>
-      </ng-container>
-      <app-dropdown [items]="difficultOptions" placeholder="Select difficulty"
-        (emitdropDownValue)="difficultyValue($event)"></app-dropdown>
+        <app-dropdown-filter formControlName="difficultControl" placeholder="Select difficulty"
+          [items]="difficultOptions"></app-dropdown-filter>
+      </form>
       <button class="primary" id="createBtn" (click)="createQuiz()">Create</button>
       <span *ngIf="!category || !difficult">*** NOTE: Please select a category and difficulty. ***</span>
     </div>
   </div>
-  <div class="row">
-    <app-quiz [questions]="questions$ | async"></app-quiz>
-  </div>
+  <ng-container *ngIf="questions$ | async as questions">
+    <div class="row">
+      <app-quiz [questions]="questions"></app-quiz>
+    </div>
+  </ng-container>
 </ng-container>
 
 <ng-template #loading>
-  <h1>LOADING...</h1>
+  <div class="spinner"></div>
 </ng-template>

@@ -32,6 +32,11 @@ export interface Results {
   score: number;
 }
 
+export interface DropdownItem {
+  id: number;
+  name: string;
+}
+
 export type Difficulty = 'Easy' | 'Medium' | 'Hard';
 
 export type SubcategoryType = 'Entertainment' | 'Science' | 'None';

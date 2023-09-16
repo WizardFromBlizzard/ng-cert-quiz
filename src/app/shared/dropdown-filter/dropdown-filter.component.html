@@ -1,0 +1,11 @@
+<div class="dropdown">
+  <input type="text" class="dropbtn" [(ngModel)]="selectedValue" [placeholder]="placeholder"
+    (input)="filterOptions($event)" (blur)="onTouched()" aria-autocomplete="list" role="searchbox"
+    aria-haspopup="listbox" />
+  <div class="dropdown-content" role="listbox">
+    <span *ngFor="let item of filteredOptions" (click)="newSelection(item)" tabindex="0" role="option"
+      [innerHTML]="item.name | letterSearch: selectedValue" (keydown.enter)="newSelection(item)"
+      (keydown.space)="newSelection(item)">
+    </span>
+  </div>
+</div>

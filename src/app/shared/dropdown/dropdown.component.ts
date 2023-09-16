@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DropdownItem } from 'src/app/data.models';
 
 @Component({
   selector: 'app-dropdown',
@@ -38,9 +39,4 @@ export class DropdownComponent<T extends DropdownItem> {
       this.emitdropDownValue.emit({} as T);
     }
   }
-}
-
-export interface DropdownItem {
-  id: number;
-  name: string;
 }

@@ -1,20 +1,25 @@
-import { Component, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import {
   Category,
   Difficulties,
-  Difficulty,
   Question,
   SubcategoryType,
 } from '../data.models';
 import { Observable, map, tap } from 'rxjs';
 import { QuizService } from '../quiz.service';
+import {
+  FormControl,
+  FormGroup,
+  UntypedFormBuilder,
+  Validators,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-quiz-maker',
   templateUrl: './quiz-maker.component.html',
   styleUrls: ['./quiz-maker.component.css'],
 })
-export class QuizMakerComponent {
+export class QuizMakerComponent implements OnInit {
   categories$: Observable<Category[]>;
   questions$!: Observable<Question[]>;
   difficultOptions: Difficulties[] = [
@@ -38,23 +43,47 @@ export class QuizMakerComponent {
   scienceSubcategory: Category[] = [];
   entertainmentSubcategory: Category[] = [];
   subType!: SubcategoryType | undefined;
+  quizFormGroup!: FormGroup;
+  quizForm$!: Observable<string>;
 
-  constructor(protected quizService: QuizService) {
+  constructor(
+    protected quizService: QuizService,
+    private fb: UntypedFormBuilder
+  ) {
     this.categories$ = quizService.getAllCategories().pipe(
       map((res) => this.filterCategories(res)),
       tap(console.log)
     );
   }
 
+  ngOnInit(): void {
+    this.quizFormGroup = this.fb.group({
+      categoryControl: new FormControl(null, [Validators.required]),
+      difficultControl: new FormControl(null, [Validators.required]),
+      subcategoryControl: new FormControl(null, [Validators.required]),
+    });
+
+    this.quizForm$ = this.quizFormGroup.valueChanges.pipe(
+      map((res) =>
+        res.categoryControl?.hasSubCategories
+          ? res.categoryControl?.name
+          : 'None'
+      )
+    );
+  }
+
   createQuiz(): void {
+    const category = this.quizFormGroup.controls['categoryControl']?.value;
+    const difficult = this.quizFormGroup.controls['difficultControl']?.value;
+    const subcategory =
+      this.quizFormGroup.controls['subcategoryControl']?.value;
     this.questions$ = this.quizService.createQuiz(
-      this.subcategory ? this.subcategory?.id?.toString() : this.category(),
-      this.difficult() as Difficulty
+      subcategory ? subcategory.id : category.id,
+      difficult.name
     );
   }
 
   getCategoryValue(categoryItem: Category): void {
-    // this.subcategory = event.hasSubCategories ? event : null;
     if (categoryItem.hasSubCategories) {
       this.subType = categoryItem.subcategoryType;
       this.category.set('');
@@ -69,12 +98,6 @@ export class QuizMakerComponent {
   }
 
   getSubcategoryValue(event: Category): void {
-    /*
-    TODO:
-     if subcategory is not selected it remember previous subcategory and make quiz out of it
-     FIX: when subcategory is not selected don't allow button to be clicked or make some error message
-     NOTE: same thing is happening with difficult dropdown 
-     */
     this.subcategory = event;
   }
 
