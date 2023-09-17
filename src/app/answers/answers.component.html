@@ -1,6 +1,7 @@
-<app-question *ngFor="let q of data.questions; index as i" [question]="q"
-              [userAnswer]="data.answers[i]" [correctAnswer]="q.correct_answer">
-</app-question>
+<ng-container *ngFor="let q of data?.questions; index as i">
+  <app-question [question]="q" [userAnswer]="data.answers[i]" [correctAnswer]="q.correct_answer">
+  </app-question>
+</ng-container>
 <div>
   SCORE: {{data.score}} OUT OF 5
 </div>

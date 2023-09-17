@@ -1,4 +1,9 @@
-import { Component, OnInit, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  signal,
+} from '@angular/core';
 import {
   Category,
   Difficulties,
@@ -18,6 +23,7 @@ import {
   selector: 'app-quiz-maker',
   templateUrl: './quiz-maker.component.html',
   styleUrls: ['./quiz-maker.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuizMakerComponent implements OnInit {
   categories$: Observable<Category[]>;
@@ -73,13 +79,14 @@ export class QuizMakerComponent implements OnInit {
   }
 
   createQuiz(): void {
+    this.quizService.isChangeQuestionUsed.set(false);
     const category = this.quizFormGroup.controls['categoryControl']?.value;
     const difficult = this.quizFormGroup.controls['difficultControl']?.value;
     const subcategory =
       this.quizFormGroup.controls['subcategoryControl']?.value;
     this.questions$ = this.quizService.createQuiz(
-      subcategory ? subcategory.id : category.id,
-      difficult.name
+      subcategory ? subcategory.id : category?.id,
+      difficult?.name
     );
   }
 

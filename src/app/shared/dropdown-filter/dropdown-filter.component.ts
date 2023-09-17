@@ -1,4 +1,10 @@
-import { Component, Input, OnInit, forwardRef } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+  forwardRef,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   ControlValueAccessor,
@@ -15,6 +21,7 @@ import { LetterSearchPipe } from './letter-search.pipe';
   imports: [CommonModule, FormsModule, ReactiveFormsModule, LetterSearchPipe],
   templateUrl: './dropdown-filter.component.html',
   styleUrls: ['./dropdown-filter.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

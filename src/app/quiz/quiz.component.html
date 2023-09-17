@@ -1,8 +1,20 @@
-<app-question *ngFor="let q of questions; index as i" [question]="q"
-              (change)="userAnswers[i] = $event">
-</app-question>
-<div>
-  <button class="inverse large" *ngIf="userAnswers.length == 5" (click)="submit()">
-    Submit
-  </button>
-</div>
+<ng-container *ngIf="questions?.length; else noQuestions">
+  <ng-container *ngFor="let q of questions; index as i; last as isLast; trackBy: trackQuestionId">
+    <div [@fadeInOut]>
+      <app-question *ngIf="!isLast || isChangedQuestionClicked()" [question]="q" (change)="selectAnswer(i, $event)"
+        (emitChangeQuestion)="changeQuestion(i)">
+      </app-question>
+
+    </div>
+  </ng-container>
+
+  <div>
+    <button class="inverse large" *ngIf="isEverythingSelected()" (click)="submit()">
+      Submit
+    </button>
+  </div>
+</ng-container>
+
+<ng-template #noQuestions>
+  SORRY NO QUESTIONS FOR THIS CATEGORY/SUBCATEGORY WITH THIS DIFFICULTY
+</ng-template>

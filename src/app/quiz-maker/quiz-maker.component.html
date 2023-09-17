@@ -17,9 +17,8 @@
         </ng-container>
         <app-dropdown-filter formControlName="difficultControl" placeholder="Select difficulty"
           [items]="difficultOptions"></app-dropdown-filter>
+        <button class="primary" id="createBtn" (click)="createQuiz()">Create</button>
       </form>
-      <button class="primary" id="createBtn" (click)="createQuiz()">Create</button>
-      <span *ngIf="!category || !difficult">*** NOTE: Please select a category and difficulty. ***</span>
     </div>
   </div>
   <ng-container *ngIf="questions$ | async as questions">
@@ -30,5 +29,5 @@
 </ng-container>
 
 <ng-template #loading>
-  <div class="spinner"></div>
+  <app-spinner></app-spinner>
 </ng-template>
