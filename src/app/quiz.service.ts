@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map, Observable, share } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import {
   Category,
   Difficulty,
@@ -15,6 +15,7 @@ import {
 export class QuizService {
   private API_URL = 'https://opentdb.com/';
   private latestResults!: Results;
+  isChangeQuestionUsed = signal(false);
 
   constructor(private http: HttpClient) {}
 
@@ -25,14 +26,14 @@ export class QuizService {
   }
 
   createQuiz(
-    categoryId: string,
-    difficulty: Difficulty
+    categoryId: string = '',
+    difficulty: Difficulty = 'Easy'
   ): Observable<Question[]> {
     return this.http
       .get<{ results: ApiQuestion[] }>(
         `${
           this.API_URL
-        }/api.php?amount=5&category=${categoryId}&difficulty=${difficulty.toLowerCase()}&type=multiple`
+        }/api.php?amount=6&category=${categoryId}&difficulty=${difficulty.toLowerCase()}&type=multiple`
       )
       .pipe(
         map((res) => {

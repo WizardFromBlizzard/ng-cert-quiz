@@ -11,6 +11,8 @@ import { QuestionComponent } from './question/question.component';
 import { AnswersComponent } from './answers/answers.component';
 import { DropdownComponent } from './shared/dropdown/dropdown.component';
 import { DropdownFilterComponent } from './shared/dropdown-filter/dropdown-filter.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SpinnerComponent } from './shared/spinner/spinner.component';
 
 @NgModule({
   declarations: [
@@ -22,12 +24,14 @@ import { DropdownFilterComponent } from './shared/dropdown-filter/dropdown-filte
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
     DropdownComponent,
     DropdownFilterComponent,
+    SpinnerComponent,
   ],
   providers: [],
   bootstrap: [AppComponent],

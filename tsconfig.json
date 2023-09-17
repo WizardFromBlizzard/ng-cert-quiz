@@ -23,6 +23,9 @@
       "es2020",
       "dom"
     ],
+    "paths": {
+      "@shared/*": ["src/app/shared/*"]
+    },
     "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
