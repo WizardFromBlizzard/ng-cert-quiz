@@ -37,6 +37,7 @@ export class QuizComponent {
   isChangedQuestionClicked = signal(false);
 
   submit(): void {
+    this.questions = this.questions?.slice(0, 5) ?? null;
     this.quizService.computeScore(this.questions ?? [], this.userAnswers);
     this.quizService.isChangeQuestionUsed.set(true);
     this.router.navigateByUrl('/result');
