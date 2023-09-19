@@ -90,7 +90,7 @@ export class QuizMakerComponent implements OnInit {
     const subcategory =
       this.quizFormGroup.controls['subcategoryControl']?.value;
     this.questions$ = this.quizService.createQuiz(
-      subcategory ? subcategory.id : category?.id,
+      subcategory && category.hasSubCategories ? subcategory.id : category?.id,
       difficult?.name
     );
   }
