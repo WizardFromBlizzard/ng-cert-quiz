@@ -9,10 +9,10 @@ import { QuizMakerComponent } from './quiz-maker/quiz-maker.component';
 import { QuizComponent } from './quiz/quiz.component';
 import { QuestionComponent } from './question/question.component';
 import { AnswersComponent } from './answers/answers.component';
-import { DropdownComponent } from './shared/dropdown/dropdown.component';
-import { DropdownFilterComponent } from './shared/dropdown-filter/dropdown-filter.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { SpinnerComponent } from './shared/spinner/spinner.component';
+import { DropdownFilterComponent } from '@shared/dropdown-filter/dropdown-filter.component';
+import { DropdownComponent } from '@shared/dropdown/dropdown.component';
+import { SpinnerComponent } from '@shared/spinner/spinner.component';
 
 @NgModule({
   declarations: [
