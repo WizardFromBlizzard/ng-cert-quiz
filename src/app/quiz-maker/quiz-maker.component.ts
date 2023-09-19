@@ -56,25 +56,30 @@ export class QuizMakerComponent implements OnInit {
     protected quizService: QuizService,
     private fb: UntypedFormBuilder
   ) {
-    this.categories$ = quizService.getAllCategories().pipe(
-      map((res) => this.filterCategories(res)),
-      tap(console.log)
-    );
+    this.categories$ = quizService
+      .getAllCategories()
+      .pipe(map((res) => this.filterCategories(res)));
   }
 
   ngOnInit(): void {
     this.quizFormGroup = this.fb.group({
       categoryControl: new FormControl(null, [Validators.required]),
       difficultControl: new FormControl(null, [Validators.required]),
-      subcategoryControl: new FormControl(null, [Validators.required]),
+      subcategoryControl: new FormControl(null),
     });
 
     this.quizForm$ = this.quizFormGroup.valueChanges.pipe(
-      map((res) =>
-        res.categoryControl?.hasSubCategories
-          ? res.categoryControl?.name
-          : 'None'
-      )
+      map((res) => {
+        const subCategoryCtrl = this.quizFormGroup.get('subcategoryControl');
+        if (res.categoryControl?.hasSubCategories) {
+          subCategoryCtrl?.setValidators([Validators.required]);
+          return res.categoryControl?.subcategoryType;
+        } else {
+          subCategoryCtrl?.clearValidators();
+          subCategoryCtrl?.updateValueAndValidity({ onlySelf: true });
+          return 'None';
+        }
+      })
     );
   }
 
@@ -88,37 +93,6 @@ export class QuizMakerComponent implements OnInit {
       subcategory ? subcategory.id : category?.id,
       difficult?.name
     );
-  }
-
-  getCategoryValue(categoryItem: Category): void {
-    if (categoryItem.hasSubCategories) {
-      this.subType = categoryItem.subcategoryType;
-      this.category.set('');
-      return;
-    }
-    this.category.set(categoryItem?.id.toString());
-    this.subType = 'None';
-  }
-
-  difficultyValue(event: Difficulties): void {
-    this.difficult.set(this.difficultName(event.id));
-  }
-
-  getSubcategoryValue(event: Category): void {
-    this.subcategory = event;
-  }
-
-  private difficultName(event: number): string {
-    switch (event) {
-      case 1:
-        return 'Easy';
-      case 2:
-        return 'Medium';
-      case 3:
-        return 'Hard';
-      default:
-        return '';
-    }
   }
 
   private returnSubcategory(item: Category): string {

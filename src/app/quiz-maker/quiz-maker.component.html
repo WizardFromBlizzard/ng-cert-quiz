@@ -3,21 +3,40 @@
     <div class="col-sm-11">
 
       <form [formGroup]="quizFormGroup">
-        <app-dropdown-filter [items]="categories" placeholder="Select category"
-          formControlName="categoryControl"></app-dropdown-filter>
-        <ng-container [ngSwitch]="quizForm$ | async">
-          <ng-container *ngSwitchCase="'Science'">
-            <app-dropdown-filter [items]="scienceSubcategory" formControlName="subcategoryControl"
-              placeholder="Select subcategory"></app-dropdown-filter>
+        <div class="form-element">
+          <app-dropdown-filter [items]="categories" placeholder="Select category"
+            formControlName="categoryControl"></app-dropdown-filter>
+          <span class="error"
+            *ngIf="quizFormGroup.get('categoryControl')?.touched && !quizFormGroup.get('categoryControl')?.dirty && quizFormGroup.get('categoryControl')?.hasError('required')">
+            Categorys is required.
+          </span>
+        </div>
+        <div class="form-element">
+          <ng-container [ngSwitch]="quizForm$ | async">
+            <ng-container *ngSwitchCase="'Science'">
+              <app-dropdown-filter [items]="scienceSubcategory" formControlName="subcategoryControl"
+                placeholder="Select subcategory"></app-dropdown-filter>
+            </ng-container>
+            <ng-container *ngSwitchCase="'Entertainment'">
+              <app-dropdown-filter [items]="entertainmentSubcategory" formControlName="subcategoryControl"
+                placeholder="Select subcategory"></app-dropdown-filter>
+            </ng-container>
           </ng-container>
-          <ng-container *ngSwitchCase="'Entertainment'">
-            <app-dropdown-filter [items]="entertainmentSubcategory" formControlName="subcategoryControl"
-              placeholder="Select subcategory"></app-dropdown-filter>
-          </ng-container>
-        </ng-container>
-        <app-dropdown-filter formControlName="difficultControl" placeholder="Select difficulty"
-          [items]="difficultOptions"></app-dropdown-filter>
-        <button class="primary" id="createBtn" (click)="createQuiz()">Create</button>
+          <span class="error"
+            *ngIf="quizFormGroup.get('subcategoryControl')?.touched && !quizFormGroup.get('subcategoryControl')?.dirty && quizFormGroup.get('subcategoryControl')?.hasError('required')">
+            Subcategory is required.
+          </span>
+        </div>
+        <div class="form-element">
+          <app-dropdown-filter formControlName="difficultControl" placeholder="Select difficulty"
+            [items]="difficultOptions"></app-dropdown-filter>
+          <span class="error"
+            *ngIf="quizFormGroup.get('difficultControl')?.touched && !quizFormGroup.get('difficultControl')?.dirty && quizFormGroup.get('difficultControl')?.hasError('required')">
+            Difficulty is required.
+          </span>
+        </div>
+        <button class="primary" id="createBtn" [disabled]="!quizFormGroup.valid" (click)="createQuiz()">Create</button>
+        <span class="note" *ngIf="!quizFormGroup.valid"> *Select all fields</span>
       </form>
     </div>
   </div>

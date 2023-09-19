@@ -1,0 +1,22 @@
+form {
+  display: flex;
+  align-items: center;
+}
+
+.note {
+  color: #1565c0;
+  margin-left: 1em;
+}
+
+.error {
+  position: absolute;
+  color: red;
+  left: 10px;
+  font-size: 14px;
+  top: 40px;
+}
+
+.form-element {
+  display: flex;
+  position: relative;
+}
